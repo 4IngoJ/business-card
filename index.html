@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ingo Jurz · Contact</title>
+<meta name="description" content="Digital contact card of Ingo Jurz. Reach support at hello@didact.digital or save the contact to your phone.">
+<meta name="author" content="Ingo Jurz">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#141315">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ingo Jurz">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Ingo Jurz · Contact">
+<meta property="og:description" content="Digital contact card. Reach support at hello@didact.digital.">
+<meta property="og:image" content="og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Portrait of Ingo Jurz">
+<meta property="profile:first_name" content="Ingo">
+<meta property="profile:last_name" content="Jurz">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ingo Jurz · Contact">
+<meta name="twitter:description" content="Digital contact card. Reach support at hello@didact.digital.">
+<meta name="twitter:image" content="og.jpg">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23141315'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23d9b99b'%3EIJ%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="portrait.jpg" fetchpriority="high">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"Ingo Jurz","image":"portrait.jpg","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"hello@didact.digital"}}}
+</script>
+
+<style>
+:root{
+  --bg:#141315; --card:#1b1a1c; --line:#ffffff14; --text:#f3efe9; --mute:#a59f96;
+  --accent:#d9b99b; --accent-2:#b98f6a; --ink:#2a1d12;
+  --pad:clamp(14px,3vw,28px);
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{min-height:100vh;min-height:100dvh;display:grid;place-items:center;
+  padding:max(var(--pad),env(safe-area-inset-top)) max(var(--pad),env(safe-area-inset-right)) max(var(--pad),env(safe-area-inset-bottom)) max(var(--pad),env(safe-area-inset-left));
+  background:radial-gradient(120% 80% at 50% 0%,#2b2926 0%,var(--bg) 60%);color:var(--text);
+  font:16px/1.5 -apple-system,"SF Pro Text",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px #000a}
+@media (min-width:700px){.card{max-width:540px;border-radius:32px}}
+.hero{position:relative;aspect-ratio:4/4.3;background:#222}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--card) 4%,#1b1a1c00 55%)}
+.name{position:absolute;left:0;right:0;bottom:14px;z-index:1;text-align:center;
+  font:500 clamp(34px,8vw,48px)/1.05 "New York",Georgia,serif;letter-spacing:-.01em}
+.body{padding:10px clamp(20px,5vw,32px) clamp(24px,5vw,34px);display:grid;gap:14px}
+h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);text-align:center;font-weight:500}
+.btn{display:flex;justify-content:center;align-items:center;min-height:52px;padding:14px;border-radius:16px;
+  font:600 16px -apple-system,"SF Pro Text",system-ui,sans-serif;text-decoration:none;cursor:pointer;
+  transition:transform .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.primary{border:0;background:linear-gradient(180deg,var(--accent),var(--accent-2));color:var(--ink)}
+.secondary{border:1px solid var(--line);background:#ffffff08;color:var(--text)}
+.mail{text-align:center;color:var(--mute);font-size:14px;overflow-wrap:anywhere}
+@media (hover:hover){.btn:hover{transform:translateY(-1px)}.secondary:hover{background:#ffffff12}}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="hero">
+    <img src="portrait.jpg" width="1000" height="762" fetchpriority="high" decoding="async" alt="Portrait of Ingo Jurz in a taupe blazer and glasses">
+    <h1 class="name">Ingo Jurz</h1>
+  </div>
+  <div class="body">
+    <h2>Support</h2>
+    <a class="btn primary" href="mailto:hello@didact.digital">Email support</a>
+    <p class="mail">hello@didact.digital</p>
+    <button class="btn secondary" id="save" type="button">Save my contact</button>
+  </div>
+</main>
+
+<script>
+document.getElementById('save').addEventListener('click', () => {
+  const vcf = ['BEGIN:VCARD','VERSION:3.0','N:Jurz;Ingo;;;','FN:Ingo Jurz',
+    'EMAIL;TYPE=WORK:hello@didact.digital','END:VCARD'].join('\r\n');
+  const url = URL.createObjectURL(new Blob([vcf], {type:'text/vcard'}));
+  Object.assign(document.createElement('a'), {href:url, download:'ingo-jurz.vcf'}).click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+</script>
+</body>
+</html>
