@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ingo Jurz · Contact</title>
-<meta name="description" content="Digital contact card of Ingo Jurz. Reach support at hello@didact.digital or save the contact to your phone.">
+<title>Ingo Jurz · didact.</title>
+<meta name="description" content="Ingo Jurz builds Mac apps at didact and works on Atlassian training at catworkx academy. Save the contact, connect on LinkedIn, or write to hello@didact.digital.">
 <link rel="canonical" href="https://didact.digital/business-card/">
-<meta property="og:url" content="https://didact.digital/business-card/">
 <meta name="author" content="Ingo Jurz">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#141315">
+<meta name="theme-color" content="#1A1917">
 <meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -18,8 +17,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <meta property="og:type" content="profile">
-<meta property="og:title" content="Ingo Jurz · Contact">
-<meta property="og:description" content="Digital contact card. Reach support at hello@didact.digital.">
+<meta property="og:url" content="https://didact.digital/business-card/">
+<meta property="og:site_name" content="didact.">
+<meta property="og:title" content="Ingo Jurz · didact.">
+<meta property="og:description" content="Mac apps at didact, Atlassian training at catworkx academy. Save my contact.">
 <meta property="og:image" content="https://didact.digital/business-card/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -27,72 +28,281 @@
 <meta property="profile:first_name" content="Ingo">
 <meta property="profile:last_name" content="Jurz">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ingo Jurz · Contact">
-<meta name="twitter:description" content="Digital contact card. Reach support at hello@didact.digital.">
+<meta name="twitter:title" content="Ingo Jurz · didact.">
+<meta name="twitter:description" content="Mac apps at didact, Atlassian training at catworkx academy. Save my contact.">
 <meta name="twitter:image" content="https://didact.digital/business-card/og.jpg">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23141315'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23d9b99b'%3EIJ%3C/text%3E%3C/svg%3E">
-<link rel="preload" as="image" href="portrait.jpg" fetchpriority="high">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon-180.png">
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/onest-700.woff2" crossorigin>
+<link rel="preload" as="image" href="portrait.webp" type="image/webp" fetchpriority="high">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"Ingo Jurz","image":"https://didact.digital/business-card/portrait.jpg","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"hello@didact.digital"}}}
+{"@context":"https://schema.org","@type":"ProfilePage","url":"https://didact.digital/business-card/","mainEntity":{"@type":"Person","name":"Ingo Jurz","image":"https://didact.digital/business-card/portrait.jpg","jobTitle":"Founder","worksFor":{"@type":"Organization","name":"didact.","url":"https://didact.digital/"},"email":"mailto:hello@didact.digital","sameAs":["https://www.linkedin.com/in/ingojurz","https://didact.digital/"]}}
 </script>
 
 <style>
 :root{
-  --bg:#141315; --card:#1b1a1c; --line:#ffffff14; --text:#f3efe9; --mute:#a59f96;
-  --accent:#d9b99b; --accent-2:#b98f6a; --ink:#2a1d12;
+  /* didact brand: Ink, Paper, Graphite, Stone */
+  --ink:#1A1917; --paper:#FAF9F7; --graphite:#5C5A56; --stone:#E6E4E0;
+  --bg:var(--ink); --card:#22211E; --raise:#2A2925; --line:#FAF9F71A;
+  --text:var(--paper); --mute:#A9A6A0;
+  --sans:"Onest",-apple-system,system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
   --pad:clamp(14px,3vw,28px);
 }
 *{box-sizing:border-box;margin:0}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
 body{min-height:100vh;min-height:100dvh;display:grid;place-items:center;
   padding:max(var(--pad),env(safe-area-inset-top)) max(var(--pad),env(safe-area-inset-right)) max(var(--pad),env(safe-area-inset-bottom)) max(var(--pad),env(safe-area-inset-left));
-  background:radial-gradient(120% 80% at 50% 0%,#2b2926 0%,var(--bg) 60%);color:var(--text);
-  font:16px/1.5 -apple-system,"SF Pro Text",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px #000a}
-@media (min-width:700px){.card{max-width:540px;border-radius:32px}}
-.hero{position:relative;aspect-ratio:4/4.3;background:#222}
-.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--card) 4%,#1b1a1c00 55%)}
-.name{position:absolute;left:0;right:0;bottom:14px;z-index:1;text-align:center;
-  font:500 clamp(34px,8vw,48px)/1.05 "New York",Georgia,serif;letter-spacing:-.01em}
-.body{padding:10px clamp(20px,5vw,32px) clamp(24px,5vw,34px);display:grid;gap:14px}
-h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);text-align:center;font-weight:500}
-.btn{display:flex;justify-content:center;align-items:center;min-height:52px;padding:14px;border-radius:16px;
-  font:600 16px -apple-system,"SF Pro Text",system-ui,sans-serif;text-decoration:none;cursor:pointer;
-  transition:transform .2s,background .2s;-webkit-tap-highlight-color:transparent}
-.primary{border:0;background:linear-gradient(180deg,var(--accent),var(--accent-2));color:var(--ink)}
-.secondary{border:1px solid var(--line);background:#ffffff08;color:var(--text)}
-.mail{text-align:center;color:var(--mute);font-size:14px;overflow-wrap:anywhere}
-@media (hover:hover){.btn:hover{transform:translateY(-1px)}.secondary:hover{background:#ffffff12}}
-.btn:active{transform:scale(.98)}
-.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+  background:radial-gradient(110% 70% at 50% 0%,#2E2C28 0%,var(--bg) 62%);color:var(--text);
+  font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+.label{font:500 11px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.card{position:relative;z-index:1;width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 40px 90px #0009}
+@media (min-width:700px){.card{max-width:520px;border-radius:32px}}
+
+/* hero + flip */
+.hero{position:relative;aspect-ratio:1280/1180;perspective:1400px;background:#1d1c1a}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.front picture,.front img{display:block;width:100%;height:100%}
+.front img{object-fit:cover;object-position:50% 18%}
+.front::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,var(--card) 3%,#22211E00 52%)}
+.back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;padding:28px 30px;background:var(--raise)}
+.hero.flipped .front{transform:rotateY(-180deg)}
+.hero.flipped .back{transform:rotateY(0)}
+.flip{position:absolute;inset:0;z-index:2;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.meta{position:absolute;left:24px;right:24px;bottom:18px;z-index:1;text-align:center;pointer-events:none}
+.meta .label{display:block;margin-bottom:8px}
+h1{font:700 clamp(36px,9vw,50px)/1 var(--sans);letter-spacing:-.04em}
+.tap{position:absolute;right:20px;bottom:22px;z-index:1;pointer-events:none}
+.back p{color:var(--mute);max-width:32ch}
+
+.tools{position:absolute;top:14px;right:14px;z-index:3;display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:#1A191799;color:var(--paper);cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.icon-btn svg{width:18px;height:18px}
+
+/* body */
+.body{padding:12px clamp(20px,5vw,30px) clamp(22px,5vw,30px);display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.role{text-align:center;color:var(--mute);font-size:15px;text-wrap:balance} .role span{display:inline-block} .role .sep{margin:0 .3em} .role b{color:var(--text);font-weight:600}
+.body{container-type:inline-size}
+@container (max-width:312px){.role .sep{display:none} .role span{display:block}}
+.btn{display:flex;justify-content:center;align-items:center;gap:10px;min-height:54px;padding:14px;border-radius:16px;border:0;
+  font:600 16px var(--sans);text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s,background .2s}
+.btn svg{width:18px;height:18px}
+.primary{background:var(--paper);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile,.row{color:var(--text);text-decoration:none;border:1px solid var(--line);background:#FAF9F708;border-radius:16px;transition:background .2s,transform .2s}
+.tile{display:grid;justify-items:center;gap:6px;padding:14px 6px;font-size:13px;color:var(--mute)}
+.tile svg{width:20px;height:20px;color:var(--paper)}
+h2{text-align:center;margin-top:8px}
+.links{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.row{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 16px}
+.row .ico{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:var(--raise)}
+.row .ico svg{width:18px;height:18px}
+.row .symbol{font:700 17px/1 var(--sans);letter-spacing:-.04em}
+.row span{flex:1;min-width:0}
+.row b{display:block;font-weight:600}
+.row small{display:block;color:var(--mute);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .arrow{width:16px;height:16px;color:var(--mute);flex:none}
+.foot{display:grid;justify-items:center;gap:10px;padding-top:10px;color:var(--mute);font-size:13px;text-align:center}
+.foot img{height:20px;width:auto;opacity:.9}
+@media (hover:hover){.tile:hover,.row:hover{background:#FAF9F712;transform:translateY(-1px)}.primary:hover{transform:translateY(-1px)}}
+.btn:active,.tile:active,.row:active{transform:scale(.98)}
+:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+
+.qr{width:min(210px,56%);aspect-ratio:1;padding:14px;border-radius:16px;background:var(--paper);color:var(--ink);display:grid;place-items:center;font-size:13px}
+.qr svg{display:block;width:100%;height:100%}
+.toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;padding:10px 16px;border-radius:99px;background:var(--paper);color:var(--ink);font:500 14px var(--sans);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
+<canvas id="field" aria-hidden="true"></canvas>
 <main class="card">
-  <div class="hero">
-    <img src="portrait.jpg" width="1000" height="762" fetchpriority="high" decoding="async" alt="Portrait of Ingo Jurz in a taupe blazer and glasses">
-    <h1 class="name">Ingo Jurz</h1>
-  </div>
+  <section class="hero" id="hero" aria-label="Profile">
+    <div class="tools">
+      <button class="icon-btn" id="share" type="button" aria-label="Share this card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      </button>
+    </div>
+    <button class="flip" id="flip" type="button" aria-pressed="false" aria-label="Flip card"></button>
+    <div class="face front">
+      <picture>
+        <source srcset="portrait.webp" type="image/webp">
+        <img src="portrait.jpg" width="1280" height="976" fetchpriority="high" alt="Portrait of Ingo Jurz in a taupe blazer and round glasses">
+      </picture>
+      <div class="meta">
+        <span class="label" id="clock">Austria</span>
+        <h1>Ingo Jurz</h1>
+      </div>
+      <span class="label tap" aria-hidden="true">⟳ Tap</span>
+    </div>
+    <div class="face back" aria-hidden="true">
+      <span class="label">Scan to open</span>
+      <div class="qr" id="qr-code" role="img" aria-label="QR code linking to didact.digital/business-card"></div>
+      <p>Point a camera here to save my card.</p>
+      <span class="label">Tap to flip back</span>
+    </div>
+  </section>
+
   <div class="body">
-    <h2>Support</h2>
-    <a class="btn primary" href="mailto:hello@didact.digital">Email support</a>
-    <p class="mail">hello@didact.digital</p>
-    <button class="btn secondary" id="save" type="button">Save my contact</button>
+    <p class="role"><span><b>Academy Lead, catworkx</b></span><span class="sep" aria-hidden="true"> · </span><span>Founder, didact.</span></p>
+
+    <button class="btn primary" id="save" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+      Save my contact
+    </button>
+
+    <nav class="grid" aria-label="Quick contact">
+      <a class="tile" href="https://www.linkedin.com/in/ingojurz" rel="me noopener" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.9c0-1.17-.02-2.68-1.63-2.68-1.64 0-1.89 1.28-1.89 2.6V21h-4z"/></svg>
+        LinkedIn
+      </a>
+      <a class="tile" href="mailto:hello@didact.digital">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        Email
+      </a>
+    </nav>
+
+    <h2 class="label">Follow along</h2>
+    <nav class="links" aria-label="Links">
+      <a class="row" href="https://www.linkedin.com/in/ingojurz" rel="me noopener" target="_blank">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.9c0-1.17-.02-2.68-1.63-2.68-1.64 0-1.89 1.28-1.89 2.6V21h-4z"/></svg></span>
+        <span><b>LinkedIn</b><small>Ingo Jurz</small></span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+      <a class="row" href="https://catworkx.one/catworkx-academy" rel="noopener" target="_blank">
+        <span class="ico"><svg viewBox="5 0 188 188" fill="currentColor" aria-hidden="true"><path d="M192.64 0c-.46.09-76.58 28.96-76.58 28.96-9.64 3.66-24.74 3.66-34.38 0 0 0-76.11-28.86-76.57-28.96.1.46 31.04 82.62 32.32 85.45 0 0 16 39.74 61.44 39.74 45.99 0 61.57-40 61.57-40S192.55.46 192.64 0z"/><path d="M161.98 106.7c-15.02 19.34-38.27 30.99-63.1 30.99s-48.08-11.65-63.1-30.99c-.52 1.36-30.57 80.6-30.66 81.06.46-.09 76.58-28.96 76.58-28.96 9.64-3.66 24.74-3.66 34.38 0 0 0 76.11 28.86 76.57 28.96-.1-.47-30.67-81.06-30.67-81.06z"/></svg></span>
+        <span><b>catworkx academy</b><small>Atlassian training for Jira, Confluence &amp; more</small></span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+      <a class="row" href="https://didact.digital/">
+        <span class="ico symbol" aria-hidden="true">d.</span>
+        <span><b>didact.digital</b><small>Apps for high performing people.</small></span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+    </nav>
+
+    <footer class="foot">
+      <p>Saved you my details. Let’s stay in touch.</p>
+      <a href="https://didact.digital/" aria-label="didact. homepage"><img src="/assets/didact-wordmark-paper.svg" alt="didact." width="84" height="20"></a>
+    </footer>
   </div>
 </main>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-document.getElementById('save').addEventListener('click', () => {
+const CARD_URL = 'https://didact.digital/business-card/';
+const $ = id => document.getElementById(id);
+
+const toast = msg => {
+  $('toast').textContent = msg;
+  $('toast').classList.add('show');
+  setTimeout(() => $('toast').classList.remove('show'), 2200);
+};
+
+$('flip').addEventListener('click', () => {
+  const flipped = $('hero').classList.toggle('flipped');
+  $('flip').setAttribute('aria-pressed', String(flipped));
+  document.querySelector('.back').setAttribute('aria-hidden', String(!flipped));
+  document.querySelector('.front').setAttribute('aria-hidden', String(flipped));
+  if (flipped) drawQr();
+});
+
+// Background: a calm dot grid (calendar cells, board columns) with a slow diagonal swell.
+(() => {
+  const cv = $('field'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const PITCH = 30, FRAME_MS = 1000 / 30, PERIOD = 14;
+  let w, h, running = false, last = 0;
+  const size = () => {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    w = innerWidth; h = innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw(performance.now());
+  };
+  const draw = now => {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#FAF9F7';
+    const t = reduce.matches ? 0 : now / 1000 / PERIOD * 2 * Math.PI;
+    for (let y = PITCH / 2; y < h; y += PITCH) {
+      for (let x = PITCH / 2; x < w; x += PITCH) {
+        const wave = (Math.sin((x + y) / 190 - t) + 1) / 2;
+        ctx.globalAlpha = .06 + wave * .14;
+        ctx.beginPath(); ctx.arc(x, y, 1 + wave * .7, 0, 6.2832); ctx.fill();
+      }
+    }
+  };
+  const loop = now => {
+    if (!running) return;
+    if (now - last >= FRAME_MS) { last = now; draw(now); }
+    requestAnimationFrame(loop);
+  };
+  const sync = () => {
+    const go = !reduce.matches && !document.hidden;
+    if (go && !running) { running = true; requestAnimationFrame(loop); }
+    else if (!go) { running = false; draw(performance.now()); }
+  };
+  addEventListener('resize', size);
+  document.addEventListener('visibilitychange', sync);
+  reduce.addEventListener('change', sync);
+  size(); sync();
+})();
+
+const tick = () => {
+  const t = new Intl.DateTimeFormat('en-GB', {hour:'2-digit', minute:'2-digit', timeZone:'Europe/Vienna'}).format(new Date());
+  $('clock').textContent = `Austria · ${t}`;
+};
+tick(); setInterval(tick, 30000);
+
+$('save').addEventListener('click', () => {
   const vcf = ['BEGIN:VCARD','VERSION:3.0','N:Jurz;Ingo;;;','FN:Ingo Jurz',
-    'EMAIL;TYPE=WORK:hello@didact.digital','END:VCARD'].join('\r\n');
+    'ORG:catworkx','TITLE:Academy Lead','NOTE:Founder\\, didact.',
+    'EMAIL;TYPE=WORK,PREF:ingo.jurz@catworkx.com','EMAIL;TYPE=WORK:hello@didact.digital',
+    'item1.URL:https://catworkx.one/catworkx-academy','item1.X-ABLabel:catworkx academy',
+    'item2.URL:https://didact.digital/','item2.X-ABLabel:didact.',
+    'item3.URL:https://www.linkedin.com/in/ingojurz','item3.X-ABLabel:LinkedIn',
+    'END:VCARD'].join('\r\n');
   const url = URL.createObjectURL(new Blob([vcf], {type:'text/vcard'}));
   Object.assign(document.createElement('a'), {href:url, download:'ingo-jurz.vcf'}).click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
+
+$('share').addEventListener('click', async () => {
+  try {
+    if (navigator.share) return await navigator.share({title:'Ingo Jurz', url:CARD_URL});
+    await navigator.clipboard.writeText(CARD_URL);
+    toast('Link copied');
+  } catch (err) {
+    if (err.name !== 'AbortError') toast('Could not share. Link: didact.digital/business-card');
+  }
+});
+
+// The QR library loads once, the first time the card is flipped.
+let qrReady;
+const loadQr = () => qrReady ??= new Promise((resolve, reject) => {
+  const s = Object.assign(document.createElement('script'), {
+    src:'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js', integrity:'sha384-mZT2gIty7ZDdOGkxfP6joZcYdMW1Jvj9dRlfpTmaJAKKXTqzygtB22k7FLe+KZC1', crossOrigin:'anonymous', onload:resolve, onerror:reject});
+  document.head.append(s);
+});
+const drawQr = async () => {
+  if ($('qr-code').querySelector('svg')) return;
+  try {
+    await loadQr();
+    const qr = qrcode(0, 'M'); qr.addData(CARD_URL); qr.make();
+    $('qr-code').innerHTML = qr.createSvgTag({cellSize:4, margin:0, scalable:true});
+  } catch {
+    qrReady = undefined;
+    $('qr-code').textContent = 'QR code unavailable offline.';
+  }
+};
 </script>
 </body>
 </html>
