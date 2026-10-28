@@ -1,0 +1,33 @@
+// Facts: Atlassian Cloud release blog 2025-2026, Atlassian Community and Developer Community, Atlassian blog archives. Status 28 Oct 2026.
+// [old, new, app, when, edition, where the old term still shows up]   edition: cloud | all | past
+window.CARDS=[
+["Issue","Work item","Jira, JSM","2025","cloud","JQL still says issue. Existing APIs, parts of admin and help docs too. Jira Data Center: no plans announced."],
+["Issue type","Work type","Jira","2025","cloud","The REST API and JQL still say issuetype."],
+["Project","Space","Jira, JSM, JPD","2025/26","cloud","JQL still says project. Some help docs too. Atlassian Projects is a different, new thing."],
+["Automation rule","Flow","Jira Automation, Studio","2026","cloud","Docs mix rule and flow. Many people confuse flow with workflow."],
+["Automation component","Step","Jira Automation","2026","cloud","Older screenshots and videos."],
+["Analytics","Insights","Atlassian Analytics app","Oct 2026","cloud","Doc URLs still say /analytics/. The rollout comes in phases."],
+["Insight","Assets","Jira Service Management","2022","all","Old API paths /Insight still work next to /Assets. Data Center got it with JSM 5.3."],
+["IQL","AQL","Jira Service Management","2022","all","iqlFunction still works next to aqlFunction."],
+["Products","Apps","Atlassian Administration","2025/26","cloud","Admin mails, audit logs and URLs follow over time."],
+["Atlassian Access","Atlassian Guard","Admin and security","before 2026","cloud","Release notes still write: formerly known as Atlassian Access."],
+["Jira Work Management","Jira","Licensing and name","2024/25","cloud","The project types business and software remain."],
+["Queues (default view)","List view","Jira Service Management","2025/26","cloud","Space admins can also rename Queues to Cases or Requests."],
+["Custom fields (admin page)","Fields","Jira admin","2025","cloud","Older training slides."],
+["Copy (page action)","Duplicate","Confluence","2025","cloud","Older how-to articles."],
+["Live pages","Live docs","Confluence","2025","cloud","Developer docs use both."],
+["Fabric","Whiteboards","Confluence","2024/25","cloud","Old announcements and talks."],
+["User-created activity","In-app data","Audit log settings","Oct 2025","cloud","Older admin guides."],
+["Atlassian Intelligence","AI features","Bitbucket Cloud settings","Jul 2026","cloud","Only in Bitbucket workspace settings. Elsewhere the name stays."],
+["Roadmap (basic view)","Timeline","Jira Software","before 2026","cloud","Plans (advanced roadmaps) were not renamed."],
+["Opsgenie","Operations","Incident management","2025 to 2027","cloud","Sales ended 4 Jun 2025, support ends 5 Apr 2027. Moves into JSM or Compass."],
+["Portfolio for Jira","Advanced Roadmaps","Jira","2020","all","Data Center still says Advanced Roadmaps; the menu says Plans."],
+["Jira Service Desk","Jira Service Management","ITSM","9 Nov 2020","all","Portal URLs still contain /servicedesk/ and the API is /rest/servicedeskapi/."],
+["Stash","Bitbucket Server","Source code","Sep 2015","past","Stash Data Center became Bitbucket Data Center."],
+["GreenHopper","Jira Agile","Agile boards","Aug 2013","past","Later part of Jira Software."],
+["Bonfire","Jira Capture","Bug reporting","Aug 2013","past","Old blog posts."],
+["Atlassian OnDemand","Atlassian Cloud","Hosting","15 Dec 2014","past","Deployment options were relabeled Cloud and Server in Jul 2014."],
+["JIRA","Jira","The name itself","2017","past","Old docs and logos."],
+["Add-ons","Apps","Marketplace","around 2017","past","Sources differ on the exact date. Old URLs say plugins."],
+["Legacy Assets (custom field)","External assets platform","Jira Service Management","after 2022","cloud","The field was first called Assets, then Legacy Assets."]
+].map((a,i)=>({id:i,old:a[0],nw:a[1],app:a[2],when:a[3],ed:a[4],stays:a[5]}));
