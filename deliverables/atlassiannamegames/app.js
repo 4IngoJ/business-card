@@ -14,7 +14,7 @@ const myId=ss.get("atl_pid")||(()=>{const i=rid(12);ss.set("atl_pid",i);return i
 let toastT;const say=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),3000)};
 const base=()=>location.href.split("#")[0],joinUrl=c=>base()+"#join="+c;
 const qr=u=>{try{const q=qrcode(0,"M");q.addData(u);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch{return ""}};
-const foot=`<footer>Status 28 Oct 2026, from Atlassian's Cloud release notes and Community posts. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz.</footer>`;
+const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz.</footer>`;
 const back=`<button class="btn ghost" data-go="home">Menu</button>`;
 const answers=[...new Map(CARDS.map(c=>[norm(c.nw),c.nw])).values()].sort((a,b)=>a.localeCompare(b));
 let timers=[],G=null,peer=null,conn=null,V=null,isHost=false;
@@ -22,7 +22,7 @@ const every=(f,ms)=>{const t=setInterval(f,ms);timers.push(t);return t};
 const stopTimers=()=>{timers.forEach(clearInterval);timers=[]};
 const closeNet=()=>{try{conn&&conn.close()}catch{}try{peer&&peer.destroy()}catch{}peer=conn=G=V=null;isHost=false};
 const cleanup=()=>{stopTimers();closeNet();document.onkeydown=null};
-const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
+const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;document.getElementById("card").classList.toggle("wide",/^(round|lobby|reveal|final|li$)/.test(key));window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.preventDefault();({home,solo,memorySetup,flash,list,onePhone}[g.dataset.go]||home)()}});
 
 /* ---------- home ---------- */
@@ -30,10 +30,9 @@ const PEEL=[["Issue","Work item","sky"],["Project","Space","mint"],["Rule","Flow
 function home(){cleanup();history.replaceState(null,"",base());
 screen("home",`<div class="ink"><div class="wrap"><section class="hero"><div><h1>Who am I now?</h1><p class="lead">The new Atlassian name sits on your forehead. Everyone else can read it.</p></div>
 <div class="stack"><div class="note c-sky n1"></div><div class="note c-coral n2"></div><button class="note c-canary n3" id="peel" aria-live="polite"><span class="tape red" id="peelTag">Old name</span><span class="big" id="peelTxt">Issue</span><span class="meta" id="peelMeta">Tap to peel</span></button></div></section></div></div>
-<div class="wrap"><div class="paths"><button class="path lead" id="pF"><b>Play with friends</b><span>Everyone on their own phone or laptop. Share a link or QR code.</span></button>
+<div class="wrap"><div class="paths"><button class="path lead" id="pF"><b>Play with friends</b><span>Own phone or laptop each. Share a link or QR.</span></button>
 <button class="path" id="pO"><b>One phone, one table</b><span>Pass the phone around.</span></button><button class="path" data-go="solo"><b>Learn alone</b><span>Memory, flashcards, cheat sheet.</span></button></div>
-<form class="joinrow" id="jf"><div><label class="field" for="jc">Got a room code?</label><input id="jc" class="code-in" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE"></div><button class="btn">Join room</button></form>
-<details class="panel" style="margin-top:22px"><summary>How the friends game works</summary><p>Everyone gets a sticky note with a current Atlassian term. You see everyone's note but your own. Ask the others, use the hints that unlock over time, and pick what your note says. Faster guesses score more.</p></details>${foot}</div>`,true);
+<form class="joinrow" id="jf"><div><label class="field" for="jc">Got a room code?</label><input id="jc" class="code-in" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE"></div><button class="btn">Join room</button></form>${foot}</div>`,true);
 let i=0,shown=false;$("#peel").onclick=()=>{const b=$("#peel"),[o,n,c]=PEEL[i%PEEL.length];if(!shown){b.className="note n3 c-"+c;$("#peelTxt").textContent=n;$("#peelTag").textContent="was "+o;$("#peelMeta").textContent="Tap for the next one";shown=true}else{i++;shown=false;const[o2,,]=PEEL[i%PEEL.length];b.className="note n3 c-canary";$("#peelTxt").textContent=o2;$("#peelTag").textContent="Old name";$("#peelMeta").textContent="Tap to peel"}};
 $("#pF").onclick=()=>nameScreen("host");$("#pO").onclick=onePhone;
 $("#jf").onsubmit=e=>{e.preventDefault();const c=$("#jc").value.trim().toUpperCase();if(c.length!==5){$("#jc").focus();return say("Room codes have 5 characters.")}nameScreen("join",c)}}
@@ -193,7 +192,7 @@ if(cards[a].id===cards[c].id&&cards[a].k!==cards[c].k){[a,c].forEach(j=>$(`[data
 else{lock=true;setTimeout(()=>{[a,c].forEach(j=>{const x=$(`[data-i="${j}"]`);x.classList.add("down");x.textContent="?";x.setAttribute("aria-label","Note face down")});open=[];lock=false},900)}}}
 function flash(){cleanup();let q=shuffle(CARDS),known=0,show=false;
 const draw=()=>{if(!q.length)return screen("fl",`<div class="top">${back}</div><section class="panel" style="max-width:520px;margin:auto"><h2>Round done</h2><p>${known} of ${CARDS.length} known on the first try.</p><button class="btn primary" id="nr">New round</button></section>`),$("#nr").onclick=flash;
-const c=q[0];screen("fl",`<div class="top">${back}<span class="tape sm">${q.length} left</span></div><div class="card"><span class="tape sm">${esc(c.app)}</span> <span class="tape sm">${esc(c.when)}</span><p class="term">${esc(show?c.nw:c.old)}</p>${show?`<p class="was" style="font-family:var(--type);color:var(--mute)">Used to be: ${esc(c.old)}</p><p class="leftover">Still seen: ${esc(c.stays)}</p>`:`<p class="hint">What is it called now?</p>`}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">${show?`<button class="btn" id="a">Again later</button><button class="btn good" id="k">Knew it</button>`:`<button class="btn primary" id="r" style="grid-column:1/-1">Reveal</button>`}</div>`);
+const c=q[0];screen("fl",`<div class="top">${back}<span class="tape sm">${q.length} left</span></div><div class="cardface"><span class="tape sm">${esc(c.app)}</span> <span class="tape sm">${esc(c.when)}</span><p class="term">${esc(show?c.nw:c.old)}</p>${show?`<p class="was" style="font-family:var(--type);color:var(--mute)">Used to be: ${esc(c.old)}</p><p class="leftover">Still seen: ${esc(c.stays)}</p>`:`<p class="hint">What is it called now?</p>`}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">${show?`<button class="btn" id="a">Again later</button><button class="btn good" id="k">Knew it</button>`:`<button class="btn primary" id="r" style="grid-column:1/-1">Reveal</button>`}</div>`);
 if(!show)$("#r").onclick=()=>{show=true;draw()};else{$("#k").onclick=()=>{if(!c.seen)known++;q.shift();show=false;draw()};$("#a").onclick=()=>{c.seen=true;q.push(q.shift());show=false;draw()}}};draw()}
 function list(){cleanup();const g=[["Current, Cloud","cloud"],["Cloud and Data Center","all"],["History","past"]];
 screen("li",`<div class="top">${back}</div><h2>Cheat sheet</h2>`+g.map(([h,k])=>`<h3 style="margin:22px 0 6px;font-family:var(--marker);font-weight:400">${h}</h3><table class="table"><tbody>${CARDS.filter(c=>c.ed===k).map(c=>`<tr><td>${esc(c.old)}</td><td aria-hidden="true">&rarr;</td><td><b>${esc(c.nw)}</b><br><small>${esc(c.app)}, ${esc(c.when)}</small></td></tr>`).join("")}</tbody></table>`).join("")+foot)}
