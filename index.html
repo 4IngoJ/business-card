@@ -47,7 +47,7 @@
 :root{
   /* didact brand: Ink, Paper, Graphite, Stone */
   --ink:#1A1917; --paper:#FAF9F7; --graphite:#5C5A56; --stone:#E6E4E0;
-  --bg:var(--ink); --card:#22211E; --raise:#2A2925; --line:#FAF9F71A;
+  --bg:var(--ink); --card:#1A1917; --raise:#1A1917; --line:#FAF9F71A;
   --text:var(--paper); --mute:#A9A6A0;
   --sans:"Onest",-apple-system,system-ui,sans-serif;
   --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
@@ -70,7 +70,7 @@ body{min-height:100vh;min-height:100dvh;display:grid;place-items:center;
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .front picture,.front img{display:block;width:100%;height:100%}
 .front img{object-fit:cover;object-position:50% 18%}
-.front::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,var(--card) 3%,#22211E00 52%)}
+.front::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,var(--card) 3%,#1A191700 52%)}
 .back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;padding:28px 30px;background:var(--raise)}
 .hero.flipped .front{transform:rotateY(-180deg)}
 .hero.flipped .back{transform:rotateY(0)}

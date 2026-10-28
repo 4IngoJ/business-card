@@ -5,7 +5,7 @@
 @font-face{font-family:"Geist Mono";src:url(fonts/geist-mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Geist Mono";src:url(fonts/geist-mono-500.woff2) format("woff2");font-weight:500;font-display:swap}
 :root{
---ink:#1A1917;--paper:#FAF9F7;--card:#22211E;--raise:#2A2925;--line:#FAF9F71A;--soft:#FAF9F708;--lift:#FAF9F712;--mute:#A9A6A0;
+--ink:#1A1917;--paper:#FAF9F7;--card:#1A1917;--raise:#1A1917;--line:#FAF9F71A;--soft:#FAF9F708;--lift:#FAF9F712;--mute:#A9A6A0;
 --canary:#F7D44C;--coral:#FF8C8C;--mint:#86E3BC;--sky:#8CCBFF;--lilac:#CDB4FF;--tangerine:#FFB866;--bad:#FF8C8C;--good:#86E3BC;
 --sans:Onest,-apple-system,system-ui,sans-serif;--mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
 --pad:clamp(14px,3vw,28px);--in:clamp(18px,5vw,30px);--shadow:0 14px 32px #0007}
