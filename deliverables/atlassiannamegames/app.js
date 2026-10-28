@@ -17,6 +17,7 @@ const qr=u=>{try{const q=qrcode(0,"M");q.addData(u);q.make();return q.createSvgT
 const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz.</footer>`;
 const back=`<button class="btn ghost" data-go="home">Back</button>`;
 const answers=[...new Map(CARDS.map(c=>[norm(c.nw),c.nw])).values()].sort((a,b)=>a.localeCompare(b));
+const story=(c,title)=>`${title?`<p class="label">${esc(c.app)}, ${esc(c.when)}</p><h2 class="stt">${esc(c.old)} <span aria-hidden="true">&rarr;</span><span class="sr"> became </span> ${esc(c.nw)}</h2>`:""}<section class="sec"><h3 class="label">The story</h3><p>${esc(c.why)}</p></section><section class="sec"><h3 class="label">Still seen in</h3><p>${esc(c.stays)}</p></section>${c.src?`<p class="srcl"><a href="${esc(c.src)}" target="_blank" rel="noopener">Read the source</a></p>`:""}`;
 let timers=[],G=null,peer=null,conn=null,V=null,isHost=false;
 const every=(f,ms)=>{const t=setInterval(f,ms);timers.push(t);return t};
 const stopTimers=()=>{timers.forEach(clearInterval);timers=[]};
@@ -24,11 +25,11 @@ const closeNet=()=>{try{conn&&conn.close()}catch{}try{peer&&peer.destroy()}catch
 const cleanup=()=>{stopTimers();closeNet();document.onkeydown=null};
 const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;if(typeof setNav==="function")setNav(key);window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
 const friends=()=>nameScreen("host"),joinFocus=()=>{home();const j=$("#jc");j&&j.focus()};
-const ACT={home:"home",name:"friends",lobby:"friends",round:"friends",reveal:"friends",final:"friends",one:"onePhone",oneI:"onePhone",oneR:"onePhone",oneT:"onePhone",oneE:"onePhone",mem:"memorySetup",memS:"memorySetup",fl:"flash",li:"list"};
+const ACT={home:"home",name:"friends",lobby:"friends",round:"friends",reveal:"friends",final:"friends",one:"onePhone",oneI:"onePhone",oneR:"onePhone",oneT:"onePhone",oneE:"onePhone",mem:"memorySetup",memS:"memorySetup",fl:"flash",li:"list",tl:"timeline"};
 const setNav=key=>{const k=ACT[key.replace(/\d+$/,"")];$$("#links button").forEach(b=>b.classList.toggle("on",b.dataset.go===k));if(!/^(round|lobby|reveal|final)/.test(key))$("#navctx").innerHTML="";$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")};
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(!g)return;e.preventDefault();
 if((G||conn)&&!confirm("Leave the current room?"))return;
-({home,solo,memorySetup,flash,list,onePhone,friends,joinFocus}[g.dataset.go]||home)()});
+({home,solo,memorySetup,flash,list,timeline:timelineView,onePhone,friends,joinFocus}[g.dataset.go]||home)()});
 $("#burger").onclick=()=>{const n=$("#nav"),o=n.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)};
 
 /* ---------- home ---------- */
@@ -36,7 +37,7 @@ const PEEL=[["Issue","Work item","sky"],["Project","Space","mint"],["Rule","Flow
 function home(){cleanup();history.replaceState(null,"",base());
 screen("home",`<div class="home"><section class="hl"><h1>Who am I now?</h1><p class="sub">The new Atlassian name sits on your forehead. Everyone else can read it.</p>
 <div class="paths"><button class="path lead" id="pF"><b>Play with friends</b><span>Own phone or laptop each. Share a link or QR.</span></button>
-<button class="path" id="pO"><b>One phone, one table</b><span>Pass the phone around.</span></button><button class="path" data-go="solo"><b>Learn alone</b><span>Memory, flashcards, cheat sheet.</span></button></div>
+<button class="path" id="pO"><b>One phone, one table</b><span>Pass the phone around.</span></button><button class="path" data-go="solo"><b>Learn alone</b><span>Memory, flashcards, stories, timeline.</span></button></div>
 <form class="joinrow" id="jf"><div><label class="field" for="jc">Got a room code?</label><input id="jc" class="code-in" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE"></div><button class="btn">Join room</button></form>${foot}</section>
 <section class="hr"><div class="stack"><div class="note c-sky n1"></div><div class="note c-coral n2"></div><button class="note c-canary n3" id="peel" aria-live="polite"><span class="tape red" id="peelTag">Old name</span><span class="big" id="peelTxt">Issue</span><span class="meta" id="peelMeta">Tap to peel</span></button></div></section></div>`,true);
 let i=0,shown=false;$("#peel").onclick=()=>{const b=$("#peel"),[o,n,c]=PEEL[i%PEEL.length];if(!shown){b.className="note n3 c-"+c;$("#peelTxt").textContent=n;$("#peelTag").textContent="was "+o;$("#peelMeta").textContent="Tap for the next one";shown=true}else{i++;shown=false;const[o2,,]=PEEL[i%PEEL.length];b.className="note n3 c-canary";$("#peelTxt").textContent=o2;$("#peelTag").textContent="Old name";$("#peelMeta").textContent="Tap to peel"}};
@@ -89,7 +90,7 @@ function viewFor(pid){const now=Date.now(),me=G.players[pid],reveal=G.phase!=="r
 return{you:pid,code:G.code,phase:G.phase,set:G.set,round:G.round,hint:G.hint,left:G.phase==="round"?Math.max(0,G.endsAt-now):0,lockLeft:me?Math.max(0,me.lock-now):0,log:G.log.slice(-6),
 players:G.order.map(id=>{const p=G.players[id],c=typeof p.card==="number"?CARDS[p.card]:null,own=id===pid,open=!own||p.solved||reveal;
 const o={id,name:p.name,score:p.score,on:p.on,host:id===G.hostId,spec:p.spec,solved:p.solved,pts:p.pts};
-if(c){if(open){o.nw=c.nw;o.app=c.app;o.old=c.old;if(p.solved||reveal)o.stays=c.stays}else{if(G.hint>=1)o.app=c.app;if(G.hint>=2)o.old=c.old;if(G.hint>=3)o.len=c.nw.length,o.first=c.nw[0]}}
+if(c){if(open){o.nw=c.nw;o.app=c.app;o.old=c.old;if(p.solved||reveal){o.stays=c.stays;o.why=c.why;o.src=c.src}}else{if(G.hint>=1)o.app=c.app;if(G.hint>=2)o.old=c.old;if(G.hint>=3)o.len=c.nw.length,o.first=c.nw[0]}}
 return o})}}
 function broadcast(){if(!G)return;for(const id of G.order){const p=G.players[id];if(id!==G.hostId&&p.conn&&p.conn.open)try{p.conn.send({t:"view",v:viewFor(id)})}catch{}}applyView(viewFor(G.hostId))}
 const hostSet=(k,v)=>{G.set[k]=k==="deck"?v:+v;if(k==="deck")G.queue=[];broadcast()};
@@ -167,7 +168,7 @@ const g=$("#gbtn");if(g){const l=Math.max(0,V.lockLeft-(performance.now()-V.rx))
 
 function buildReveal(v){const h=v.you===v.players.find(p=>p.host).id;
 screen("reveal",`<div class="top"><span class="tape">Round ${v.round} of ${v.set.rounds}: the notes</span></div>
-<div class="rv">${v.players.filter(p=>p.nw).map(p=>`<div class="row"><div class="note c-${col(v.players.indexOf(p))}" style="--rot:${ROT[v.players.indexOf(p)%6]}deg"><span class="big">${esc(p.nw)}</span></div><div><div class="who">${esc(p.name)} ${p.solved?`solved it, +${p.pts}`:"did not get it"}</div><div class="was">${esc(p.app)}, formerly ${esc(p.old)}</div><p class="leftover">Still seen: ${esc(p.stays)}</p></div></div>`).join("")}</div>
+<div class="rv">${v.players.filter(p=>p.nw).map(p=>`<div class="row"><div class="note c-${col(v.players.indexOf(p))}" style="--rot:${ROT[v.players.indexOf(p)%6]}deg"><span class="big">${esc(p.nw)}</span></div><div><div class="who">${esc(p.name)} ${p.solved?`solved it, +${p.pts}`:"did not get it"}</div><div class="was">${esc(p.app)}, formerly ${esc(p.old)}</div>${story(p)}</div></div>`).join("")}</div>
 <section class="panel" style="margin-top:18px"><h2>Scores</h2><ol class="rank">${[...v.players].sort((a,b)=>b.score-a.score).map(p=>`<li><span>${esc(p.name)}</span><b>${p.score}</b></li>`).join("")}</ol>${h?`<button class="btn primary" id="nx" style="width:100%">Next round</button>`:`<p class="hint">Waiting for the host.</p>`}</section>`);
 if(h)$("#nx").onclick=hostNext}
 function buildFinal(v){const h=v.you===v.players.find(p=>p.host).id,r=[...v.players].sort((a,b)=>b.score-a.score),w=r[0],txt=`${w.name} won Atlassian Post-It with ${w.score} points. Which renamed Atlassian term trips you up most?`;
@@ -199,10 +200,20 @@ if(cards[a].id===cards[c].id&&cards[a].k!==cards[c].k){[a,c].forEach(j=>$(`[data
 else{lock=true;setTimeout(()=>{[a,c].forEach(j=>{const x=$(`[data-i="${j}"]`);x.classList.add("down");x.textContent="?";x.setAttribute("aria-label","Note face down")});open=[];lock=false},900)}}}
 function flash(){cleanup();let q=shuffle(CARDS),known=0,show=false;
 const draw=()=>{if(!q.length)return screen("fl",`<div class="top">${back}</div><section class="panel" style="max-width:520px;margin:auto"><h2>Round done</h2><p>${known} of ${CARDS.length} known on the first try.</p><button class="btn primary" id="nr">New round</button></section>`),$("#nr").onclick=flash;
-const c=q[0];screen("fl",`<div class="top">${back}<span class="tape sm">${q.length} left</span></div><div class="cardface"><span class="tape sm">${esc(c.app)}</span> <span class="tape sm">${esc(c.when)}</span><p class="term">${esc(show?c.nw:c.old)}</p>${show?`<p class="was" style="font-family:var(--type);color:var(--mute)">Used to be: ${esc(c.old)}</p><p class="leftover">Still seen: ${esc(c.stays)}</p>`:`<p class="hint">What is it called now?</p>`}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">${show?`<button class="btn" id="a">Again later</button><button class="btn good" id="k">Knew it</button>`:`<button class="btn primary" id="r" style="grid-column:1/-1">Reveal</button>`}</div>`);
+const c=q[0];screen("fl",`<div class="top">${back}<span class="tape sm">${q.length} left</span></div><div class="cardface"><span class="tape sm">${esc(c.app)}</span> <span class="tape sm">${esc(c.when)}</span><p class="term">${esc(show?c.nw:c.old)}</p>${show?`<p class="was">Used to be: <b>${esc(c.old)}</b></p>${story(c)}`:`<p class="hint">What is it called now?</p>`}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">${show?`<button class="btn" id="a">Again later</button><button class="btn good" id="k">Knew it</button>`:`<button class="btn primary" id="r" style="grid-column:1/-1">Reveal</button>`}</div>`);
 if(!show)$("#r").onclick=()=>{show=true;draw()};else{$("#k").onclick=()=>{if(!c.seen)known++;q.shift();show=false;draw()};$("#a").onclick=()=>{c.seen=true;q.push(q.shift());show=false;draw()}}};draw()}
-function list(){cleanup();const g=[["Current, Cloud","cloud"],["Cloud and Data Center","all"],["History","past"]];
-screen("li",`<div class="top">${back}</div><h2>Cheat sheet</h2>`+g.map(([h,k])=>`<h3 style="margin:22px 0 6px;font-family:var(--marker);font-weight:400">${h}</h3><table class="table"><tbody>${CARDS.filter(c=>c.ed===k).map(c=>`<tr><td>${esc(c.old)}</td><td aria-hidden="true">&rarr;</td><td><b>${esc(c.nw)}</b><br><small>${esc(c.app)}, ${esc(c.when)}</small></td></tr>`).join("")}</tbody></table>`).join("")+foot)}
+const ERAS=[["Current, Cloud","cloud"],["Cloud and Data Center","all"],["History","past"]];
+const rows=()=>`<label class="field" for="q">Filter</label><input id="q" type="text" placeholder="Type a term, app or year" autocomplete="off"><p class="hint">Tap a row for the story.</p>`+ERAS.map(([h,k])=>`<h3 class="grp">${h}</h3><div class="acc">${CARDS.filter(c=>c.ed===k).map(c=>`<div class="item" data-t="${esc([c.old,c.nw,c.app,c.when,c.why].join(" ").toLowerCase())}"><button type="button" class="head" id="h${c.id}" aria-expanded="false" aria-controls="p${c.id}"><span><b>${esc(c.old)}</b> <span aria-hidden="true">&rarr;</span><span class="sr"> became </span> <b>${esc(c.nw)}</b><small>${esc(c.app)}, ${esc(c.when)}</small></span><i aria-hidden="true"></i></button><div class="pbody" id="p${c.id}" role="region" aria-labelledby="h${c.id}" hidden>${story(c)}</div></div>`).join("")}</div>`).join("");
+const timeline=()=>{const cols=[...new Set(CARDS.map(c=>c.y).filter(Boolean))].sort((a,b)=>a-b).concat(null);
+return`<p class="hint">One row per app, one column per year with renamings. Tap a note for the story.</p><div class="tl" tabindex="0" role="region" aria-label="Timeline, scrolls sideways"><div class="tlg" style="--n:${cols.length}"><div class="th sticky"></div>${cols.map(y=>`<div class="th">${y||"Year unclear"}</div>`).join("")}${GROUPS.map((g,gi)=>`<div class="tn sticky">${esc(g)}</div>${cols.map(y=>`<div class="tc">${CARDS.filter(c=>c.grp===g&&c.y===y).map(c=>`<button type="button" class="chip c-${COLORS[gi%6]}" data-d="${c.id}"><b>${esc(c.nw)}</b><small>was ${esc(c.old)}</small></button>`).join("")}</div>`).join("")}`).join("")}</div></div>`};
+function list(tab){cleanup();const tl=tab==="tl";
+screen(tl?"tl":"li",`<div class="top">${back}</div><h2>Cheat sheet</h2><div class="tabs" role="tablist" aria-label="View"><button type="button" role="tab" aria-selected="${!tl}" data-tab="list">List</button><button type="button" role="tab" aria-selected="${tl}" data-tab="tl">Timeline</button></div>${tl?timeline():rows()}<dialog id="sd" aria-label="Term story"><div class="sdin" id="sdc"></div><button type="button" class="btn" id="sdx">Close</button></dialog>${foot}`);
+$$("[data-tab]").forEach(b=>b.onclick=()=>list(b.dataset.tab));
+const sd=$("#sd");$("#sdx").onclick=()=>sd.close();sd.addEventListener("click",e=>{if(e.target===sd)sd.close()});
+$$("[data-d]").forEach(b=>b.onclick=()=>{$("#sdc").innerHTML=story(CARDS[b.dataset.d],true);sd.showModal()});
+$$(".head").forEach(b=>b.onclick=()=>{const o=b.getAttribute("aria-expanded")==="true";b.setAttribute("aria-expanded",!o);$("#"+b.getAttribute("aria-controls")).hidden=o});
+const q=$("#q");if(q)q.oninput=()=>{const k=q.value.trim().toLowerCase();$$(".item").forEach(i=>{i.hidden=!!k&&!i.dataset.t.includes(k)});$$(".grp").forEach(g=>{g.hidden=!$$(".item:not([hidden])",g.nextElementSibling).length})}}
+const timelineView=()=>list("tl");
 
 /* ---------- boot ---------- */
 const m=location.hash.match(/join=([A-Za-z0-9]{5})/);
