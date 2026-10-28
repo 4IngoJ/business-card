@@ -15,24 +15,30 @@ let toastT;const say=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on
 const base=()=>location.href.split("#")[0],joinUrl=c=>base()+"#join="+c;
 const qr=u=>{try{const q=qrcode(0,"M");q.addData(u);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch{return ""}};
 const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz.</footer>`;
-const back=`<button class="btn ghost" data-go="home">Menu</button>`;
+const back=`<button class="btn ghost" data-go="home">Back</button>`;
 const answers=[...new Map(CARDS.map(c=>[norm(c.nw),c.nw])).values()].sort((a,b)=>a.localeCompare(b));
 let timers=[],G=null,peer=null,conn=null,V=null,isHost=false;
 const every=(f,ms)=>{const t=setInterval(f,ms);timers.push(t);return t};
 const stopTimers=()=>{timers.forEach(clearInterval);timers=[]};
 const closeNet=()=>{try{conn&&conn.close()}catch{}try{peer&&peer.destroy()}catch{}peer=conn=G=V=null;isHost=false};
 const cleanup=()=>{stopTimers();closeNet();document.onkeydown=null};
-const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;document.getElementById("card").classList.toggle("wide",/^(round|lobby|reveal|final|li$)/.test(key));window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
-document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.preventDefault();({home,solo,memorySetup,flash,list,onePhone}[g.dataset.go]||home)()}});
+const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;if(typeof setNav==="function")setNav(key);window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
+const friends=()=>nameScreen("host"),joinFocus=()=>{home();const j=$("#jc");j&&j.focus()};
+const ACT={home:"home",name:"friends",lobby:"friends",round:"friends",reveal:"friends",final:"friends",one:"onePhone",oneI:"onePhone",oneR:"onePhone",oneT:"onePhone",oneE:"onePhone",mem:"memorySetup",memS:"memorySetup",fl:"flash",li:"list"};
+const setNav=key=>{const k=ACT[key.replace(/\d+$/,"")];$$("#links button").forEach(b=>b.classList.toggle("on",b.dataset.go===k));if(!/^(round|lobby|reveal|final)/.test(key))$("#navctx").innerHTML="";$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")};
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(!g)return;e.preventDefault();
+if((G||conn)&&!confirm("Leave the current room?"))return;
+({home,solo,memorySetup,flash,list,onePhone,friends,joinFocus}[g.dataset.go]||home)()});
+$("#burger").onclick=()=>{const n=$("#nav"),o=n.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)};
 
 /* ---------- home ---------- */
 const PEEL=[["Issue","Work item","sky"],["Project","Space","mint"],["Rule","Flow","coral"],["Analytics","Insights","lilac"],["Insight","Assets","tangerine"]];
 function home(){cleanup();history.replaceState(null,"",base());
-screen("home",`<div class="ink"><div class="wrap"><section class="hero"><div><h1>Who am I now?</h1><p class="lead">The new Atlassian name sits on your forehead. Everyone else can read it.</p></div>
-<div class="stack"><div class="note c-sky n1"></div><div class="note c-coral n2"></div><button class="note c-canary n3" id="peel" aria-live="polite"><span class="tape red" id="peelTag">Old name</span><span class="big" id="peelTxt">Issue</span><span class="meta" id="peelMeta">Tap to peel</span></button></div></section></div></div>
-<div class="wrap"><div class="paths"><button class="path lead" id="pF"><b>Play with friends</b><span>Own phone or laptop each. Share a link or QR.</span></button>
+screen("home",`<div class="home"><section class="hl"><h1>Who am I now?</h1><p class="sub">The new Atlassian name sits on your forehead. Everyone else can read it.</p>
+<div class="paths"><button class="path lead" id="pF"><b>Play with friends</b><span>Own phone or laptop each. Share a link or QR.</span></button>
 <button class="path" id="pO"><b>One phone, one table</b><span>Pass the phone around.</span></button><button class="path" data-go="solo"><b>Learn alone</b><span>Memory, flashcards, cheat sheet.</span></button></div>
-<form class="joinrow" id="jf"><div><label class="field" for="jc">Got a room code?</label><input id="jc" class="code-in" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE"></div><button class="btn">Join room</button></form>${foot}</div>`,true);
+<form class="joinrow" id="jf"><div><label class="field" for="jc">Got a room code?</label><input id="jc" class="code-in" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE"></div><button class="btn">Join room</button></form>${foot}</section>
+<section class="hr"><div class="stack"><div class="note c-sky n1"></div><div class="note c-coral n2"></div><button class="note c-canary n3" id="peel" aria-live="polite"><span class="tape red" id="peelTag">Old name</span><span class="big" id="peelTxt">Issue</span><span class="meta" id="peelMeta">Tap to peel</span></button></div></section></div>`,true);
 let i=0,shown=false;$("#peel").onclick=()=>{const b=$("#peel"),[o,n,c]=PEEL[i%PEEL.length];if(!shown){b.className="note n3 c-"+c;$("#peelTxt").textContent=n;$("#peelTag").textContent="was "+o;$("#peelMeta").textContent="Tap for the next one";shown=true}else{i++;shown=false;const[o2,,]=PEEL[i%PEEL.length];b.className="note n3 c-canary";$("#peelTxt").textContent=o2;$("#peelTag").textContent="Old name";$("#peelMeta").textContent="Tap to peel"}};
 $("#pF").onclick=()=>nameScreen("host");$("#pO").onclick=onePhone;
 $("#jf").onsubmit=e=>{e.preventDefault();const c=$("#jc").value.trim().toUpperCase();if(c.length!==5){$("#jc").focus();return say("Room codes have 5 characters.")}nameScreen("join",c)}}
@@ -108,16 +114,17 @@ const sendGuess=v=>isHost?onGuess(myId,v):conn&&conn.open&&conn.send({t:"guess",
 /* ---------- views ---------- */
 function applyView(v){v.rx=performance.now();V=v;const key=v.phase==="round"?"round"+v.round:v.phase;
 if(app.dataset.s!==key||v.phase==="reveal"||v.phase==="final"){app.dataset.s=key;({lobby:buildLobby,round:buildRound,reveal:buildReveal,final:buildFinal})[v.phase](v)}
-else v.phase==="lobby"?updLobby(v):updRound(v)}
+else v.phase==="lobby"?updLobby(v):updRound(v);
+const nc=$("#navctx");if(nc&&!nc.firstChild){nc.innerHTML=`<span class="tape">Room ${esc(v.code)}</span><button type="button" class="btn small" id="navleave">Leave</button>`;$("#navleave").onclick=()=>{if(confirm("Leave this room?"))leave()}}}
 const status=p=>p.host?"Host":(p.on?"Ready":"Away");
 const col=i=>COLORS[i%COLORS.length];
 const leave=()=>{ss.set("atl_room","");home()};
 
 function buildLobby(v){const url=joinUrl(v.code);
-screen("lobby",`<div class="top"><button class="btn ghost" id="leave">Leave room</button><span class="tape">Room ${v.code}</span></div>
+screen("lobby",`<div class="top"><span class="tape">Room ${v.code}</span></div>
 <div class="lobby"><section class="ticket" aria-label="Invite friends"><span class="tape sm">Invite friends</span><div class="code" aria-label="Room code ${v.code.split("").join(" ")}">${v.code}</div><div class="qr" role="img" aria-label="QR code with the invite link">${qr(url)}</div><p style="margin:0 0 10px;color:#5b564a;font-size:.95rem">Scan it, or share the link.</p><div class="row"><button class="btn primary" id="share">Share link</button><button class="btn" id="copy">Copy link</button></div></section>
 <section class="panel"><h2>Players</h2><ul class="people" id="ppl" aria-live="polite"></ul><div id="set"></div><p class="hint" id="sm" aria-live="polite"></p><div id="sw"></div></section></div>`);
-app.dataset.seen="";$("#leave").onclick=leave;
+app.dataset.seen="";
 $("#copy").onclick=()=>navigator.clipboard?navigator.clipboard.writeText(url).then(()=>say("Link copied"),()=>say(url)):say(url);
 $("#share").onclick=()=>navigator.share?navigator.share({title:"Atlassian Post-It",text:"Join my Atlassian Post-It room "+v.code,url}).catch(()=>{}):$("#copy").click();
 updLobby(v)}
@@ -137,11 +144,11 @@ const gap=Math.round(v.set.secs/4);
 return`<span class="tape nm">You</span><div class="note c-${c}" style="${rot}"><span class="q" aria-hidden="true">?</span><span class="sr">Your note is hidden from you.</span><ul class="hints">${hs.length?hs.map(h=>`<li>${esc(h)}</li>`).join(""):`<li>Ask the others. A hint unlocks every ${gap} seconds.</li>`}</ul></div><button class="btn primary" id="gbtn">Guess my note</button>`}
 return`${p.solved?`<span class="stamp">+${p.pts}</span>`:""}<span class="tape ${m?"":"sm"} nm">${m?"You":esc(p.name)}${p.on?"":" (away)"}</span><div class="note c-${c}" style="${rot}"><span class="big">${esc(p.nw)}</span><span class="meta">${esc(p.app)}</span>${p.old?`<span class="meta">formerly ${esc(p.old)}</span>`:""}</div>`}
 function buildRound(v){stopTimers();const order=[...v.players].sort((a,b)=>(b.id===v.you)-(a.id===v.you)||0);
-screen("round"+v.round,`<div class="bar"><span class="tape">Round ${v.round} of ${v.set.rounds}</span><div class="clock" id="clk"><b id="sec" aria-hidden="true">${Math.ceil(v.left/1000)}</b><i></i></div><button class="btn ghost" id="leave">Leave</button></div>
+screen("round"+v.round,`<div class="bar"><span class="tape">Round ${v.round} of ${v.set.rounds}</span><div class="clock" id="clk"><b id="sec" aria-hidden="true">${Math.ceil(v.left/1000)}</b><i></i></div></div>
 <div class="wall" id="wall">${order.map((p,i)=>`<article class="tile slap ${p.id===v.you?"me":""} ${p.solved?"done":""}" data-id="${esc(p.id)}" style="--i:${i}">${tileHTML(p,v,v.players.indexOf(p))}</article>`).join("")}</div>
 <ul class="feed" id="feed"></ul><div class="sr" role="status" aria-live="polite" id="live"></div>
 <dialog id="dlg" aria-label="Guess your note"><form id="gf"><label class="field" for="gq">Your note says</label><input id="gq" type="text" autocomplete="off" placeholder="Type to filter the list"><div class="opts" id="opts"></div><button type="button" class="btn ghost" id="gx">Cancel</button></form></dialog>`);
-$("#leave").onclick=leave;setTimeout(()=>$$(".slap").forEach(t=>t.classList.remove("slap")),1500);
+setTimeout(()=>$$(".slap").forEach(t=>t.classList.remove("slap")),1500);
 every(tickUI,200);app.dataset.sigs="{}";bindGuess();updRound(v)}
 function bindGuess(){const d=$("#dlg"),q=$("#gq"),o=$("#opts");
 const fill=()=>{const k=norm(q.value);const l=answers.filter(a=>norm(a).includes(k));o.innerHTML=l.length?l.map(a=>`<button type="button" data-a="${esc(a)}">${esc(a)}</button>`).join(""):`<p class="hint">Nothing matches. Try fewer letters.</p>`};
@@ -159,14 +166,14 @@ if(c){$("#sec").textContent=s;c.style.setProperty("--p",(left/tot).toFixed(3));c
 const g=$("#gbtn");if(g){const l=Math.max(0,V.lockLeft-(performance.now()-V.rx));g.disabled=l>0;g.textContent=l>0?"Locked for "+Math.ceil(l/1000)+"s":"Guess my note"}}
 
 function buildReveal(v){const h=v.you===v.players.find(p=>p.host).id;
-screen("reveal",`<div class="top"><span class="tape">Round ${v.round} of ${v.set.rounds}: the notes</span><button class="btn ghost" id="leave">Leave</button></div>
+screen("reveal",`<div class="top"><span class="tape">Round ${v.round} of ${v.set.rounds}: the notes</span></div>
 <div class="rv">${v.players.filter(p=>p.nw).map(p=>`<div class="row"><div class="note c-${col(v.players.indexOf(p))}" style="--rot:${ROT[v.players.indexOf(p)%6]}deg"><span class="big">${esc(p.nw)}</span></div><div><div class="who">${esc(p.name)} ${p.solved?`solved it, +${p.pts}`:"did not get it"}</div><div class="was">${esc(p.app)}, formerly ${esc(p.old)}</div><p class="leftover">Still seen: ${esc(p.stays)}</p></div></div>`).join("")}</div>
 <section class="panel" style="margin-top:18px"><h2>Scores</h2><ol class="rank">${[...v.players].sort((a,b)=>b.score-a.score).map(p=>`<li><span>${esc(p.name)}</span><b>${p.score}</b></li>`).join("")}</ol>${h?`<button class="btn primary" id="nx" style="width:100%">Next round</button>`:`<p class="hint">Waiting for the host.</p>`}</section>`);
-$("#leave").onclick=leave;if(h)$("#nx").onclick=hostNext}
+if(h)$("#nx").onclick=hostNext}
 function buildFinal(v){const h=v.you===v.players.find(p=>p.host).id,r=[...v.players].sort((a,b)=>b.score-a.score),w=r[0],txt=`${w.name} won Atlassian Post-It with ${w.score} points. Which renamed Atlassian term trips you up most?`;
-screen("final",`<div class="top"><span class="tape red">Final scores</span><button class="btn ghost" id="leave">Leave</button></div><h1 class="podium">${esc(w.name)} wins</h1><ol class="rank">${r.map(p=>`<li><span>${esc(p.name)}</span><b>${p.score}</b></li>`).join("")}</ol>
+screen("final",`<div class="top"><span class="tape red">Final scores</span></div><h1 class="podium">${esc(w.name)} wins</h1><ol class="rank">${r.map(p=>`<li><span>${esc(p.name)}</span><b>${p.score}</b></li>`).join("")}</ol>
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">${h?`<button class="btn primary" id="again">Play again</button>`:`<span class="hint">The host can start another game.</span>`}<button class="btn" id="cp">Copy result</button></div>${foot}`);
-$("#leave").onclick=leave;$("#cp").onclick=()=>navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>say("Copied")):say(txt);if(h)$("#again").onclick=hostAgain}
+$("#cp").onclick=()=>navigator.clipboard?navigator.clipboard.writeText(txt).then(()=>say("Copied")):say(txt);if(h)$("#again").onclick=hostAgain}
 
 /* ---------- one phone ---------- */
 function onePhone(){cleanup();const o=Object.assign({pl:"Anna, Ben",secs:60,deck:"cloud"},JSON.parse(ls.get("atl_one")||"{}"));

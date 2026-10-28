@@ -18,10 +18,13 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="card" id="card">
-<header class="nav"><a class="who" href="https://didact.digital/business-card/">ingo.jurz</a><span class="sep" aria-hidden="true">/</span><span class="app">Atlassian Post-It</span><span class="sp"></span><button type="button" class="btn" data-go="home">Menu</button></header>
-<div id="app"></div>
-</main>
+<header class="nav" id="nav"><div class="navin">
+<a class="who" href="https://didact.digital/business-card/">ingo.jurz</a><span class="sep" aria-hidden="true">/</span><button type="button" class="brand" data-go="home">Atlassian Post-It</button>
+<nav class="links" id="links" aria-label="Game"><button type="button" data-go="friends">Play with friends</button><button type="button" data-go="onePhone">One phone</button><button type="button" data-go="memorySetup">Memory</button><button type="button" data-go="flash">Flashcards</button><button type="button" data-go="list">Cheat sheet</button></nav>
+<span class="sp"></span><div id="navctx" class="navctx"></div><button type="button" class="btn small" id="joinbtn" data-go="joinFocus">Join room</button>
+<button type="button" class="btn small" id="burger" aria-expanded="false" aria-controls="links">Menu</button>
+</div></header>
+<main class="stage"><div class="card" id="card"><div id="app"></div></div></main>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:20px">This game needs JavaScript.</p></noscript>
 <script src="vendor/peerjs.min.js"></script>
