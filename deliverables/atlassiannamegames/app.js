@@ -72,7 +72,7 @@ function nextCard(){if(!G.queue.length){let pool=CARDS.filter(c=>G.set.deck==="a
 function startRound(){G.round++;G.phase="round";G.hint=0;G.endsAt=Date.now()+G.set.secs*1000;
 G.order.forEach(id=>{const p=G.players[id];if(!p.on){p.card=null;p.spec=true;return}p.spec=false;p.card=nextCard();p.solved=false;p.pts=0;p.lock=0});
 glog("info","Round "+G.round+" started");clearInterval(G.tick);G.tick=setInterval(tick,400);broadcast()}
-function tick(){if(!G||G.phase!=="round")return;const tot=G.set.secs*1000,el=(Date.now()-(G.endsAt-tot))/tot,h=el>=.75?3:el>=.5?2:el>=.25?1:0;if(h!==G.hint){G.hint=h;broadcast()}if(Date.now()>=G.endsAt)endRound()}
+function tick(){if(!G||G.phase!=="round")return;const tot=G.set.secs*1000,el=(Date.now()-(G.endsAt-tot))/tot,h=Math.floor(el*4)>=3?3:Math.max(0,Math.min(2,Math.floor(el*4)));if(h!==G.hint){G.hint=h;broadcast()}if(Date.now()>=G.endsAt)endRound()}
 function endRound(){clearInterval(G.tick);G.phase=G.round>=G.set.rounds?"final":"reveal";glog("info","Round "+G.round+" over");broadcast()}
 function onGuess(pid,v){if(G.phase!=="round")return;const p=G.players[pid],now=Date.now();if(!p||p.spec||p.solved||p.lock>now)return;const c=CARDS[p.card];
 if(norm(v)===norm(c.nw)){const f=(G.endsAt-now)/(G.set.secs*1000);p.pts=Math.max(5,Math.round(10+f*20)-G.hint*3);p.score+=p.pts;p.solved=true;glog("ok",p.name+" solved it (+"+p.pts+")");tell(pid,"ok","Right! +"+p.pts+" points");if(allDone())return endRound()}
@@ -82,7 +82,7 @@ function tell(pid,k,m){if(pid===G.hostId)return ev(k,m);const c=G.players[pid]&&
 function ev(k,m){say(m);if(k==="no"){const g=$("#gbtn");if(g){g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake")}}if(k==="ok"&&navigator.vibrate)navigator.vibrate(60)}
 function viewFor(pid){const now=Date.now(),me=G.players[pid],reveal=G.phase!=="round";
 return{you:pid,code:G.code,phase:G.phase,set:G.set,round:G.round,hint:G.hint,left:G.phase==="round"?Math.max(0,G.endsAt-now):0,lockLeft:me?Math.max(0,me.lock-now):0,log:G.log.slice(-6),
-players:G.order.map(id=>{const p=G.players[id],c=p.card!=null?CARDS[p.card]:null,own=id===pid,open=!own||p.solved||reveal;
+players:G.order.map(id=>{const p=G.players[id],c=typeof p.card==="number"?CARDS[p.card]:null,own=id===pid,open=!own||p.solved||reveal;
 const o={id,name:p.name,score:p.score,on:p.on,host:id===G.hostId,spec:p.spec,solved:p.solved,pts:p.pts};
 if(c){if(open){o.nw=c.nw;o.app=c.app;o.old=c.old;if(p.solved||reveal)o.stays=c.stays}else{if(G.hint>=1)o.app=c.app;if(G.hint>=2)o.old=c.old;if(G.hint>=3)o.len=c.nw.length,o.first=c.nw[0]}}
 return o})}}
@@ -110,7 +110,8 @@ const sendGuess=v=>isHost?onGuess(myId,v):conn&&conn.open&&conn.send({t:"guess",
 function applyView(v){v.rx=performance.now();V=v;const key=v.phase==="round"?"round"+v.round:v.phase;
 if(app.dataset.s!==key||v.phase==="reveal"||v.phase==="final"){app.dataset.s=key;({lobby:buildLobby,round:buildRound,reveal:buildReveal,final:buildFinal})[v.phase](v)}
 else v.phase==="lobby"?updLobby(v):updRound(v)}
-const me=v=>v.players.find(p=>p.id===v.you),col=i=>COLORS[i%COLORS.length];
+const status=p=>p.host?"Host":(p.on?"Ready":"Away");
+const col=i=>COLORS[i%COLORS.length];
 const leave=()=>{ss.set("atl_room","");home()};
 
 function buildLobby(v){const url=joinUrl(v.code);
@@ -122,7 +123,7 @@ $("#copy").onclick=()=>navigator.clipboard?navigator.clipboard.writeText(url).th
 $("#share").onclick=()=>navigator.share?navigator.share({title:"Atlassian Post-It",text:"Join my Atlassian Post-It room "+v.code,url}).catch(()=>{}):$("#copy").click();
 updLobby(v)}
 function updLobby(v){const host=v.players.find(p=>p.host),isH=v.you===host.id,seen=app.dataset.seen.split(",");
-$("#ppl").innerHTML=v.players.map((p,i)=>`<li class="${seen.includes(p.id)?"":"pop"} ${p.on?"":"off"}"><span class="tape sm">${esc(p.name)}${p.id===v.you?" (you)":""}</span><div class="note c-${col(i)}" style="--rot:${ROT[i%6]}deg;margin-top:-4px"><span class="big">${p.host?"Host":p.on?"Ready":"Away"}</span></div></li>`).join("");
+$("#ppl").innerHTML=v.players.map((p,i)=>`<li class="${seen.includes(p.id)?"":"pop"} ${p.on?"":"off"}"><span class="tape sm">${esc(p.name)}${p.id===v.you?" (you)":""}</span><div class="note c-${col(i)}" style="--rot:${ROT[i%6]}deg;margin-top:-4px"><span class="big">${status(p)}</span></div></li>`).join("");
 app.dataset.seen=v.players.map(p=>p.id).join(",");
 const sig=JSON.stringify([v.set,isH]),s=$("#set");if(s.dataset.sig!==sig){s.dataset.sig=sig;const o=(k,a)=>a.map(([x,l])=>`<option value="${x}" ${String(v.set[k])===String(x)?"selected":""}>${l}</option>`).join("");
 s.innerHTML=isH?`<label class="field" for="sr">Rounds</label><select id="sr">${o("rounds",[[2,"2 rounds"],[3,"3 rounds"],[5,"5 rounds"]])}</select><label class="field" for="ss">Time per round</label><select id="ss">${o("secs",[[60,"60 seconds"],[90,"90 seconds"],[120,"2 minutes"]])}</select><label class="field" for="sd">Cards</label><select id="sd">${o("deck",[["cloud","Cloud today (23 cards)"],["all","Everything"],["past","Time travel, 2013 to 2017"]])}</select>`:`<p class="hint">${v.set.rounds} rounds, ${v.set.secs} seconds each. The host picks the cards.</p>`;
@@ -171,7 +172,7 @@ $("#leave").onclick=leave;$("#cp").onclick=()=>navigator.clipboard?navigator.cli
 /* ---------- one phone ---------- */
 function onePhone(){cleanup();const o=Object.assign({pl:"Anna, Ben",secs:60,deck:"cloud"},JSON.parse(ls.get("atl_one")||"{}"));
 screen("one",`<div class="top">${back}</div><section class="panel" style="max-width:520px;margin:auto"><h2>One phone, one table</h2><p>The holder presses the phone to their forehead. Everyone else reads the note and explains it without saying it. Right guess: tap Got it.</p>
-<form id="of"><label class="field" for="pl">Players, separated by commas</label><input id="pl" type="text" value="${esc(o.pl)}"><label class="field" for="sc">Seconds per turn</label><select id="sc">${[30,45,60,90].map(s=>`<option ${s==o.secs?"selected":""}>${s}</option>`).join("")}</select><label class="field" for="dk">Cards</label><select id="dk"><option value="cloud" ${o.deck=="cloud"?"selected":""}>Cloud today</option><option value="all" ${o.deck=="all"?"selected":""}>Everything</option><option value="past" ${o.deck=="past"?"selected":""}>Time travel</option></select><button class="btn primary" style="width:100%;margin-top:14px">Start</button></form></section>`);
+<form id="of"><label class="field" for="pl">Players, separated by commas</label><input id="pl" type="text" value="${esc(o.pl)}"><label class="field" for="sc">Seconds per turn</label><select id="sc">${[30,45,60,90].map(s=>`<option ${s===o.secs?"selected":""}>${s}</option>`).join("")}</select><label class="field" for="dk">Cards</label><select id="dk"><option value="cloud" ${o.deck==="cloud"?"selected":""}>Cloud today</option><option value="all" ${o.deck==="all"?"selected":""}>Everything</option><option value="past" ${o.deck==="past"?"selected":""}>Time travel</option></select><button class="btn primary" style="width:100%;margin-top:14px">Start</button></form></section>`);
 $("#of").onsubmit=e=>{e.preventDefault();const pl=$("#pl").value.split(",").map(s=>s.trim()).filter(Boolean);if(pl.length<2)return say("Add at least two players.");const c={pl:pl.join(", "),secs:+$("#sc").value,deck:$("#dk").value};ls.set("atl_one",JSON.stringify(c));
 const pool=CARDS.filter(k=>c.deck==="all"||(c.deck==="cloud"?k.ed!=="past":k.ed==="past"));const S={pl,sc:Object.fromEntries(pl.map(p=>[p,0])),deck:shuffle(pool),turn:0};oneIntro(S,c)}}
 function oneIntro(S,c){stopTimers();document.onkeydown=null;if(S.turn>=S.pl.length*2)return oneEnd(S);const p=S.pl[S.turn%S.pl.length];
