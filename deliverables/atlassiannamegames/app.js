@@ -12,9 +12,9 @@ const ss={get:k=>{try{return sessionStorage.getItem(k)}catch{return null}},set:(
 const ls={get:k=>{try{return localStorage.getItem(k)||""}catch{return ""}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
 const myId=ss.get("atl_pid")||(()=>{const i=rid(12);ss.set("atl_pid",i);return i})();
 let toastT;const say=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),3000)};
-const base=()=>location.href.split("#")[0],joinUrl=c=>base()+"#join="+c;
+const base=()=>location.href.split("#")[0],joinUrl=c=>location.origin+location.pathname+"#join="+c;
 const qr=u=>{try{const q=qrcode(0,"M");q.addData(u);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch{return ""}};
-const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz.</footer>`;
+const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz. Visits are counted with GoatCounter, without cookies.</footer>`;
 const back=`<button class="btn ghost" data-go="home">Back</button>`;
 const answers=[...new Map(CARDS.map(c=>[norm(c.nw),c.nw])).values()].sort((a,b)=>a.localeCompare(b));
 const story=(c,title)=>`${title?`<p class="label">${esc(c.app)}, ${esc(c.when)}</p><h2 class="stt">${esc(c.old)} <span aria-hidden="true">&rarr;</span><span class="sr"> became </span> ${esc(c.nw)}</h2>`:""}<section class="sec"><h3 class="label">The story</h3><p>${esc(c.why)}</p></section><section class="sec"><h3 class="label">Still seen in</h3><p>${esc(c.stays)}</p></section>${c.src?`<p class="srcl"><a href="${esc(c.src)}" target="_blank" rel="noopener">Read the source</a></p>`:""}`;
@@ -24,12 +24,16 @@ const stopTimers=()=>{timers.forEach(clearInterval);timers=[]};
 const closeNet=()=>{try{conn&&conn.close()}catch{}try{peer&&peer.destroy()}catch{}peer=conn=G=V=null;isHost=false};
 const cleanup=()=>{stopTimers();closeNet();document.onkeydown=null};
 const screen=(key,html,raw)=>{app.dataset.s=key;app.innerHTML=raw?html:`<div class="wrap">${html}</div>`;if(typeof setNav==="function")setNav(key);window.scrollTo(0,0);const h=$("h1,h2",app);if(h){h.setAttribute("tabindex","-1")}};
-const friends=()=>{home();openFriends()},joinFocus=()=>{home();openFriends(true)};
-const ACT={home:"home",name:"friends",lobby:"friends",round:"friends",reveal:"friends",final:"friends",one:"onePhone",oneI:"onePhone",oneR:"onePhone",oneT:"onePhone",oneE:"onePhone",mem:"memorySetup",memS:"memorySetup",fl:"flash",li:"list",tl:"timeline"};
+const friends=()=>{home();openFriends()};
+const ACT={home:"home",name:"friends",lobby:"friends",round:"friends",reveal:"friends",final:"friends",one:"onePhone",oneI:"onePhone",oneR:"onePhone",oneT:"onePhone",oneE:"onePhone",mem:"memorySetup",memS:"memorySetup",fl:"flash",li:"list",tl:"list"};
 const setNav=key=>{const k=ACT[key.replace(/\d+$/,"")];$$("#links button").forEach(b=>b.classList.toggle("on",b.dataset.go===k));if(!/^(round|lobby|reveal|final)/.test(key))$("#navctx").innerHTML="";$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")};
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(!g)return;e.preventDefault();
 if((G||conn)&&!confirm("Leave the current room?"))return;
-({home,solo,memorySetup,flash,list,timeline:timelineView,onePhone,friends,joinFocus}[g.dataset.go]||home)()});
+({home,solo,memorySetup,flash,list,onePhone,friends}[g.dataset.go]||home)()});
+const loadJs=src=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-pdf]");if(!b)return;e.preventDefault();$("#nav").classList.remove("open");b.disabled=true;
+try{if(!window.jspdf)await loadJs("vendor/jspdf.umd.min.js");if(!window.cheatPdf)await loadJs("cheatpdf.js");cheatPdf(CARDS,window.jspdf.jsPDF).save("atlassian-renaming-cheat-sheet.pdf");
+if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"cheat-sheet-pdf",title:"Cheat sheet PDF",event:true})}catch{say("The PDF could not be created. Please try again.")}b.disabled=false});
 $("#burger").onclick=()=>{const n=$("#nav"),o=n.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)};
 
 /* ---------- home ---------- */
@@ -232,7 +236,6 @@ const sd=$("#sd");$("#sdx").onclick=()=>sd.close();sd.addEventListener("click",e
 $$("[data-d]").forEach(b=>b.onclick=()=>{$("#sdc").innerHTML=story(CARDS[b.dataset.d],true);sd.showModal()});
 $$(".head").forEach(b=>b.onclick=()=>{const it=b.closest(".item"),o=it.classList.toggle("open");b.setAttribute("aria-expanded",o);$("#"+b.getAttribute("aria-controls")).inert=!o});
 const q=$("#q");if(q)q.oninput=()=>{const k=q.value.trim().toLowerCase();$$(".item").forEach(i=>{i.hidden=!!k&&!i.dataset.t.includes(k)});$$(".grp").forEach(g=>{g.hidden=!$$(".item:not([hidden])",g.nextElementSibling).length})}}
-const timelineView=()=>list("tl");
 
 /* ---------- boot ---------- */
 const m=location.hash.match(/join=([A-Za-z0-9]{5})/);

@@ -39,11 +39,11 @@ p{margin:.5em 0}
 .links button.on{color:var(--paper);background:var(--lift)}
 .navctx{display:flex;align-items:center;gap:8px}
 .btn.small{min-height:40px;padding:0 14px;border-radius:12px;font-size:.95rem}
-#burger{display:none}
+#burger{display:none}.mobpdf{display:none}
 @media(max-width:900px){
 .links{display:none;position:absolute;left:0;right:0;top:60px;flex-direction:column;margin:0;padding:10px var(--pad) 14px;background:var(--ink);border-bottom:1px solid var(--line)}
 .nav.open .links{display:flex}.links button{text-align:left;min-height:46px}
-#burger{display:inline-flex}#joinbtn{display:none}
+#burger{display:inline-flex}#pdfbtn{display:none}.mobpdf{display:block}
 }
 @media(max-width:380px){.nav .brand{font-size:.92rem}}
 .wrap{padding:0 var(--in)}
