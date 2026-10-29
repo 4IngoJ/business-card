@@ -32,7 +32,7 @@ if((G||conn)&&!confirm("Leave the current room?"))return;
 ({home,solo,memorySetup,flash,list,onePhone,friends}[g.dataset.go]||home)()});
 const loadJs=src=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-pdf]");if(!b)return;e.preventDefault();$("#nav").classList.remove("open");b.disabled=true;
-try{if(!window.jspdf)await loadJs("vendor/jspdf.umd.min.js");if(!window.cheatPdf)await loadJs("cheatpdf.js?v=3");(await cheatPdf(CARDS,window.jspdf.jsPDF)).save("Atlassian Renamings Cheat Sheet by Ingo Jurz.pdf");
+try{if(!window.jspdf)await loadJs("vendor/jspdf.umd.min.js");if(!window.cheatPdf)await loadJs("cheatpdf.js?v=4");(await cheatPdf(CARDS,window.jspdf.jsPDF)).save("Atlassian Renamings Cheat Sheet by Ingo Jurz.pdf");
 if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"cheat-sheet-pdf",title:"Cheat sheet PDF",event:true})}catch{say("The PDF could not be created. Please try again.")}b.disabled=false});
 $("#burger").onclick=()=>{const n=$("#nav"),o=n.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)};
 

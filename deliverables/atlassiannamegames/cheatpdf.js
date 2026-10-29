@@ -64,7 +64,7 @@ y+=8;
 });
 
 const pages=doc.getNumberOfPages();
-for(let p=1;p<=pages;p++){doc.setPage(p);mono("didact.digital/business-card/deliverables/atlassiannamegames",M,H-28,MUTE,6.5);mono("Page "+p+" / "+pages,W-M,H-28,MUTE,6.5,{align:"right"})}
+for(let p=1;p<=pages;p++){doc.setPage(p);mono("Page "+p+" / "+pages,W-M,H-28,MUTE,6.5,{align:"right"})}
 doc.setCharSpace(0);
 const url="https://didact.digital/business-card/deliverables/atlassiannamegames/";
 doc.setProperties({title:"Atlassian Renamings Cheat Sheet by Ingo Jurz",subject:"Renamed Atlassian terms ("+cards.length+" renamings back to 2013), with the story and where the old name still shows up. Status 28 Oct 2026.",author:"Ingo Jurz",keywords:"Atlassian, Jira, Confluence, Jira Service Management, Bitbucket, renamings, renamed terms, work item, space, flow, cheat sheet, enablement, training",creator:"Atlassian Post-It: Who Am I Now? ("+url+")"});
