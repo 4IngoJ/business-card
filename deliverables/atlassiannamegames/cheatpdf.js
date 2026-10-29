@@ -1,6 +1,6 @@
 // Builds the cheat sheet PDF from CARDS in the look of the game: Ink pages, hairline cards, coloured notes with a red tape.
 // Loaded on demand with vendor/jspdf.umd.min.js; fonts are fetched from fonts/pdf/ when the button is clicked.
-window.cheatPdf=async(cards,JsPDF)=>{
+const run=async(cards,JsPDF)=>{
 const FONTS=[["Onest","normal","onest-400"],["Onest","bold","onest-700"],["Mono","normal","geist-mono-500"]];
 const b64=buf=>{let s="";const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)};
 const bufs=await Promise.all(FONTS.map(f=>fetch("fonts/pdf/"+f[2]+".ttf").then(r=>{if(!r.ok)throw new Error(f[2]);return r.arrayBuffer()})));
@@ -71,3 +71,5 @@ doc.setProperties({title:"Atlassian Renamings Cheat Sheet by Ingo Jurz",subject:
 doc.setLanguage("en-US");doc.setCreationDate(new Date("2026-10-28T00:00:00Z"));doc.setDisplayMode("fullwidth","continuous","UseNone");doc.viewerPreferences({DisplayDocTitle:true});
 doc.addMetadata('<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/"><dc:title>Atlassian Renamings Cheat Sheet by Ingo Jurz</dc:title><dc:creator>Ingo Jurz</dc:creator><dc:language>en-US</dc:language><dc:source>'+url+'</dc:source><xmpRights:Marked>True</xmpRights:Marked><xmpRights:WebStatement>'+url+'</xmpRights:WebStatement></rdf:Description></rdf:RDF>',"http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 return doc};
+// A stale cached app.js still calls .save() right on the result, so the promise carries it too.
+window.cheatPdf=(c,J)=>{const p=run(c,J);p.save=n=>p.then(d=>d.save(n));return p};
