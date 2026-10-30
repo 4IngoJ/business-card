@@ -14,7 +14,7 @@ const myId=ss.get("atl_pid")||(()=>{const i=rid(12);ss.set("atl_pid",i);return i
 let toastT;const say=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),3000)};
 const base=()=>location.href.split("#")[0],joinUrl=c=>location.origin+location.pathname+"#join="+c;
 const qr=u=>{try{const q=qrcode(0,"M");q.addData(u);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch{return ""}};
-const foot=`<footer>Status 28 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz. Visits are counted with GoatCounter, without cookies.</footer>`;
+const foot=`<footer>Status 30 Oct 2026. Rollouts are staged, so your site may differ. Not affiliated with Atlassian. Made by Ingo Jurz. Visits are counted with GoatCounter, without cookies.</footer>`;
 const back=`<button class="btn ghost" data-go="home">Back</button>`;
 const answers=[...new Map(CARDS.map(c=>[norm(c.nw),c.nw])).values()].sort((a,b)=>a.localeCompare(b));
 const story=(c,title)=>`${title?`<p class="label">${esc(c.app)}, ${esc(c.when)}</p><h2 class="stt">${esc(c.old)} <span aria-hidden="true">&rarr;</span><span class="sr"> became </span> ${esc(c.nw)}</h2>`:""}<section class="sec"><h3 class="label">The story</h3><p>${esc(c.why)}</p></section><section class="sec"><h3 class="label">Still seen in</h3><p>${esc(c.stays)}</p></section>${c.src?`<p class="srcl"><a href="${esc(c.src)}" target="_blank" rel="noopener">Read the source</a></p>`:""}`;
@@ -32,7 +32,7 @@ if((G||conn)&&!confirm("Leave the current room?"))return;
 ({home,solo,memorySetup,flash,list,onePhone,friends}[g.dataset.go]||home)()});
 const loadJs=src=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-pdf]");if(!b)return;e.preventDefault();$("#nav").classList.remove("open");b.disabled=true;
-try{if(!window.jspdf)await loadJs("vendor/jspdf.umd.min.js");if(!window.cheatPdf)await loadJs("cheatpdf.js?v=4");(await cheatPdf(CARDS,window.jspdf.jsPDF)).save("Atlassian Renamings Cheat Sheet by Ingo Jurz.pdf");
+try{if(!window.jspdf)await loadJs("vendor/jspdf.umd.min.js");if(!window.cheatPdf)await loadJs("cheatpdf.js?v=5");(await cheatPdf(CARDS,window.jspdf.jsPDF)).save("Atlassian Renamings Cheat Sheet by Ingo Jurz.pdf");
 if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"cheat-sheet-pdf",title:"Cheat sheet PDF",event:true})}catch{say("The PDF could not be created. Please try again.")}b.disabled=false});
 $("#burger").onclick=()=>{const n=$("#nav"),o=n.classList.toggle("open");$("#burger").setAttribute("aria-expanded",o)};
 

@@ -22,7 +22,7 @@ mono("ingo.jurz  /  Atlassian Post-It",M,y,PAPER,8.5);y+=36;
 font("Onest","bold",38,PAPER,-1.2);doc.text("Cheat sheet",M,y);y+=24;
 font("Onest","normal",12,MUTE,0);doc.text("Every renamed term from the game, with its story and where the old name still shows up.",M,y);y+=17;
 y+=2;
-mono("Status 28 Oct 2026  |  Rollouts are staged  |  Not affiliated with Atlassian",M,y+8,MUTE,7);y+=34;
+mono("Status 30 Oct 2026  |  Rollouts are staged  |  Not affiliated with Atlassian",M,y+8,MUTE,7);y+=34;
 
 const ERAS=[["Current, Cloud","cloud"],["Cloud and Data Center","all"],["History","past"]];
 const GR=window.GROUPS||[];
@@ -67,8 +67,8 @@ const pages=doc.getNumberOfPages();
 for(let p=1;p<=pages;p++){doc.setPage(p);mono("Page "+p+" / "+pages,W-M,H-28,MUTE,6.5,{align:"right"})}
 doc.setCharSpace(0);
 const url="https://didact.digital/business-card/deliverables/atlassiannamegames/";
-doc.setProperties({title:"Atlassian Renamings Cheat Sheet by Ingo Jurz",subject:"Renamed Atlassian terms ("+cards.length+" renamings back to 2013), with the story and where the old name still shows up. Status 28 Oct 2026.",author:"Ingo Jurz",keywords:"Atlassian, Jira, Confluence, Jira Service Management, Bitbucket, renamings, renamed terms, work item, space, flow, cheat sheet, enablement, training",creator:"Atlassian Post-It: Who Am I Now? ("+url+")"});
-doc.setLanguage("en-US");doc.setCreationDate(new Date("2026-10-28T00:00:00Z"));doc.setDisplayMode("fullwidth","continuous","UseNone");doc.viewerPreferences({DisplayDocTitle:true});
+doc.setProperties({title:"Atlassian Renamings Cheat Sheet by Ingo Jurz",subject:"Renamed Atlassian terms ("+cards.length+" renamings back to 2013), with the story and where the old name still shows up. Status 30 Oct 2026.",author:"Ingo Jurz",keywords:"Atlassian, Jira, Confluence, Jira Service Management, Bitbucket, renamings, renamed terms, work item, space, flow, cheat sheet, enablement, training",creator:"Atlassian Post-It: Who Am I Now? ("+url+")"});
+doc.setLanguage("en-US");doc.setCreationDate(new Date("2026-10-30T00:00:00Z"));doc.setDisplayMode("fullwidth","continuous","UseNone");doc.viewerPreferences({DisplayDocTitle:true});
 doc.addMetadata('<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/"><dc:title>Atlassian Renamings Cheat Sheet by Ingo Jurz</dc:title><dc:creator>Ingo Jurz</dc:creator><dc:language>en-US</dc:language><dc:source>'+url+'</dc:source><xmpRights:Marked>True</xmpRights:Marked><xmpRights:WebStatement>'+url+'</xmpRights:WebStatement></rdf:Description></rdf:RDF>',"http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 return doc};
 // A stale cached app.js still calls .save() right on the result, so the promise carries it too.
