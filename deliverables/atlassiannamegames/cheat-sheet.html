@@ -13,7 +13,12 @@
 <script>
 // Counts the visit (GoatCounter reads utm_source from the URL as the referrer), then opens the PDF.
 // A PDF cannot run a counting script itself, so the shared link points here.
-setTimeout(function(){location.replace(document.getElementById("pdf").href)},900);
+// The redirect waits until the count request has finished (2.5 s at most), otherwise it could be cancelled.
+var go=function(){location.replace(document.getElementById("pdf").href)},t0=Date.now();
+(function wait(){
+  var sent=performance.getEntriesByType("resource").some(function(e){return e.name.indexOf("goatcounter.com/count")>-1});
+  if(sent||Date.now()-t0>2500)setTimeout(go,sent?150:0);else setTimeout(wait,100);
+})();
 </script>
 </body>
 </html>
